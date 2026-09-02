@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b1120">
   <title>SubManga — DNS & Deploy</title>
-  <meta name="description" content="Step-by-step guide to point subdomains to GitHub Pages via Hostinger DNS.">
+  <meta name="description" content="Step-by-step guide to point subdomains to GitHub Pages via Cloudflare DNS.">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -32,17 +32,54 @@
 
         <!-- Tabs -->
         <div class="tabs" role="tablist">
-          <button class="tab active" data-tab="hostinger">Hostinger DNS</button>
-          <button class="tab" data-tab="github">GitHub Pages</button>
-          <button class="tab" data-tab="generator">Link Generator</button>
+          <button class="tab active" data-tab="deploy">Deploy</button>
+          <button class="tab" data-tab="dns">DNS Records</button>
+          <button class="tab" data-tab="generator">Generator</button>
           <button class="tab" data-tab="faq">FAQ</button>
         </div>
 
-        <!-- Hostinger -->
-        <section class="tab-panel active" id="tab-hostinger" style="margin-top:24px">
+        <!-- Deploy (one-click) -->
+        <section class="tab-panel active" id="tab-deploy" style="margin-top:24px">
+          <div class="card reveal">
+            <h2 style="font-size:18px;margin-bottom:4px">One-Click Deploy</h2>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 16px">Subdomain name likho, GitHub repo batao, button dabao — DNS record auto ban jayega Cloudflare pe.</p>
+            <div id="cfNotConfigured" class="callout warning">
+              Cloudflare configured nahi hai. <a href="settings.html" style="color:var(--c1)">Settings me jaake Worker URL + Zone ID daalo</a>.
+            </div>
+            <div id="cfReady">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+                <div class="form-group" style="margin:0">
+                  <label>Subdomain Name</label>
+                  <div class="input-prefix">
+                    <span class="prefix" id="deployPrefix"></span>
+                    <input class="input" id="deployName" placeholder="jaise blog, shop, tools...">
+                  </div>
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label>GitHub Username</label>
+                  <input class="input" id="deployGithub" placeholder="jaise princekr786">
+                </div>
+              </div>
+              <button class="btn btn-primary magnetic" id="deployBtn" style="width:100%">Deploy to Cloudflare DNS</button>
+              <div id="deployResult" style="margin-top:14px;display:none">
+                <pre id="deployOutput" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:var(--font-code);font-size:12px;color:var(--c1);overflow-x:auto;white-space:pre-wrap;max-height:250px;overflow-y:auto"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Existing subdomains quick deploy -->
+          <div class="card reveal" style="margin-top:18px">
+            <h2 style="font-size:18px;margin-bottom:4px">Existing Subdomains</h2>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 12px">Ye subdomains already app me hain. Inke DNS record check karo ya re-deploy karo.</p>
+            <div id="existingList"></div>
+          </div>
+        </section>
+
+        <!-- DNS Records guide -->
+        <section class="tab-panel" id="tab-dns" style="margin-top:24px">
           <div class="card reveal visible">
-            <h2 style="font-size:18px;margin-bottom:4px">Connect a subdomain to GitHub Pages on Hostinger</h2>
-            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 8px">Ye steps kisi bhi subdomain (jaise <code style="color:var(--primary)">blog.example.com</code>) ko apne GitHub Pages site se jod denge. DNS changes ko reflect hone mein 24–48 ghante lag sakte hain.</p>
+            <h2 style="font-size:18px;margin-bottom:4px">Cloudflare DNS Records Guide</h2>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 8px">Ye steps kisi bhi subdomain (jaise <code style="color:var(--primary)">blog.princehacks.online</code>) ko apne GitHub Pages site se jod denge. DNS changes ko reflect hone mein 5-15 minute lag sakte hain.</p>
 
             <div class="step-list stagger">
               <div class="step">
@@ -61,92 +98,31 @@ https://USERNAME.github.io/REPO-NAME
               <div class="step">
                 <div class="step-num">2</div>
                 <div class="step-body">
-                  <h4>Hostinger panel kholen</h4>
-                  <p>hPanel (hPanel.hostinger.com) mein login karein. Apni website / domain ke saath <strong>DNS Zone</strong> add karne ke liye: <br>
-                  <strong>Websites → Manage</strong> → <strong>Domain</strong> → <strong>DNS / Nameservers</strong> → <strong>DNS Zone Editor</strong>.</p>
+                  <h4>Cloudflare DNS mein jaayen</h4>
+                  <p>Cloudflare Dashboard mein login karein → <strong>princehacks.online</strong> select karein → <strong>DNS</strong> tab mein jaayen.</p>
                 </div>
               </div>
 
               <div class="step">
                 <div class="step-num">3</div>
-                <div class="step-body">
-                  <h4>A records add karein (points to GitHub)</h4>
-                  <p>Apne har subdomain ke liye 4 <strong>A records</strong> add karein — Host me subdomain ka naam (jaise <code style="color:var(--primary)">blog</code>) daalein, aur in 4 GitHub IPs ko add karein:</p>
-                  <div class="code-block" data-copy="github-ips">
-                    <button class="copy-btn" data-copytarget="github-ips">Copy</button>
-<div id="github-ips" style="white-space:pre">185.199.108.153
-185.199.109.153
-185.199.110.153
-185.199.111.153</div>
-                  </div>
-                  <p>Iska matlab: <code style="color:var(--primary)">blog.</code> aapke domain ka ek naya record jo GitHub ko point karta hai.</p>
-                </div>
-              </div>
-
-              <div class="step">
-                <div class="step-num">4</div>
                 <div class="step-body">
                   <h4>CNAME record add karein</h4>
-                  <p>Aapke repo ke naam se CNAME add ho sakta hai. Host me <strong>CNAME</strong> select karein:</p>
+                  <p>Har subdomain ke liye ek <strong>CNAME record</strong> add karein:</p>
                   <div class="code-block">
-<span class="comment"># Host</span>
-www
-<span class="comment">#or apna subdomain</span>
-blog
-<span class="comment"># Value / Points to (apna GitHub Pages URL)</span>
-USERNAME.github.io
+<span class="comment"># Type: CNAME</span>
+<span class="comment"># Name:</span> blog  (ya koi bhi subdomain naam)
+<span class="comment"># Target:</span> USERNAME.github.io
+<span class="comment"># Proxy status:</span> Proxied (orange cloud ON)
                   </div>
+                  <p>Bas! Cloudflare auto-propagate kar dega.</p>
                 </div>
               </div>
 
-              <div class="step">
-                <div class="step-num">5</div>
-                <div class="step-body">
-                  <h4>Verify ho jaye</h4>
-                  <p>Hexane / Inquire ke baad browser mein <code style="color:var(--primary)">blog.yourdomain.com</code> khol ke check karein. DNS propagate hone mein thoda time lagta hai.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- GitHub -->
-        <section class="tab-panel" id="tab-github" style="margin-top:24px">
-          <div class="card reveal visible">
-            <h2 style="font-size:18px;margin-bottom:4px">GitHub Pages mein custom domain set karna</h2>
-            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 8px">Har repo ko uski subdomain se jodne ke liye:</p>
-
-            <div class="step-list stagger">
-              <div class="step">
-                <div class="step-num">1</div>
-                <div class="step-body">
-                  <h4>Repo open karein</h4>
-                  <p>Jis website ka subdomain banana hai uska <strong>GitHub repository</strong> kholen.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-num">2</div>
-                <div class="step-body">
-                  <h4>Settings → Pages</h4>
-                  <p>Repo ke <strong>Settings</strong> mein jayen, left sidebar mein <strong>Pages</strong> par click karein.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-num">3</div>
-                <div class="step-body">
-                  <h4>Custom domain set karein</h4>
-                  <p><strong>Custom domain</strong> section mein apna subdomain likhein (jaise <code style="color:var(--primary)">blog.yourdomain.com</code>) aur <strong>Save</strong> dabayen. Phir <strong>Enforce HTTPS</strong> checkbox on karein.</p>
-                </div>
-              </div>
               <div class="step">
                 <div class="step-num">4</div>
                 <div class="step-body">
-                  <h4>CNAME file (optional)</h4>
-                  <p>Best practice: apne repo ki root mein ek <strong>CNAME</strong> file banayen jisme sirf apna subdomain ho:</p>
-                  <div class="code-block" data-copy="cname-file">
-                    <button class="copy-btn" data-copytarget="cname-file">Copy</button>
-<div id="cname-file" style="white-space:pre">blog.yourdomain.com</div>
-                  </div>
+                  <h4>Verify karein</h4>
+                  <p>Deploy tab pe jaake <strong>Check DNS</strong> button dabayein. DNS propagate hone mein 5-15 minute lagte hain.</p>
                 </div>
               </div>
             </div>
@@ -171,7 +147,7 @@ USERNAME.github.io
             <div id="genResult" style="display:none">
               <div class="section-head" style="margin-top:24px"><h2>Your records</h2></div>
 
-              <h4 style="margin:14px 0 6px">1. A records (Hostinger DNS)</h4>
+              <h4 style="margin:14px 0 6px">1. A records (Cloudflare DNS)</h4>
               <div class="code-block" data-copy="rec-a">
                 <button class="copy-btn" data-copytarget="rec-a">Copy</button>
 <div id="rec-a" style="white-space:pre"></div>
@@ -205,6 +181,7 @@ USERNAME.github.io
   <script src="js/firebase-init.js"></script>
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/cloudflare.js"></script>
   <script src="js/fx.js"></script>
   <script src="js/dns.js"></script>
 </body>

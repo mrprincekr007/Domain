@@ -6,6 +6,7 @@
   App.init('subdomains');
   const $ = App.$;
   const $all = App.$all;
+  Cloudflare.load();
 
   $('#searchIcon').innerHTML = App.icons.search;
   document.querySelectorAll('[data-theme-switch]').forEach((b) => b.addEventListener('click', App.toggleTheme));
@@ -186,7 +187,7 @@
     render();
   }
 
-  $('#subForm').addEventListener('submit', (e) => {
+  $('#subForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = $('#fName').value;
     if (!name) { App.toast('Please enter a subdomain name', 'error'); return; }
@@ -201,13 +202,47 @@
       name, project: $('#fProject').value, repo: $('#fRepo').value,
       status: $('#fStatus').value, desc: $('#fDesc').value,
     };
+
+    /* save to app first */
     if (state.editingId) {
       SubManga.updateSubdomain(state.editingId, data);
       App.toast('Subdomain updated', 'success');
     } else {
       SubManga.addSubdomain(data);
-      App.toast('Subdomain added', 'success');
+
+      /* try to create DNS record on Cloudflare */
+      if (Cloudflare.configured() && data.repo) {
+        const ghUser = data.repo.split('/')[0].trim();
+        if (ghUser) {
+          const target = ghUser + '.github.io';
+          const domain = SubManga.getDomain();
+          try {
+            const res = await Cloudflare.createRecord({
+              type: 'CNAME',
+              name: name,
+              content: target,
+              ttl: 1,
+              proxied: true,
+            });
+            if (res.success) {
+              SubManga.updateSubdomain(SubManga.findSubdomain(name).id, { status: 'live' });
+              App.toast(name + '.' + domain + ' → Cloudflare mein ban gaya!', 'success');
+            } else {
+              App.toast(name + '.' + domain + ' → Cloudflare mein nahi bana!', 'error');
+            }
+          } catch (err) {
+            App.toast('Cloudflare mein nahi bana: ' + err.message, 'error');
+          }
+        } else {
+          App.toast('Subdomain added (Cloudflare ke liye repo mein username daalo)', 'warning');
+        }
+      } else if (!Cloudflare.configured()) {
+        App.toast('Subdomain added (Cloudflare configured nahi hai)', 'warning');
+      } else {
+        App.toast('Subdomain added', 'success');
+      }
     }
+
     App.closeModal('modal-form');
     render();
   });

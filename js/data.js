@@ -18,7 +18,7 @@ const SubManga = (() => {
   const STORAGE_VERSION = 1;
 
   const DEFAULT_SETTINGS = {
-    domain: 'prince.com',
+    domain: 'princehacks.online',
     ownerName: '',
     defaultDesc: '',
     storageVersion: STORAGE_VERSION,
@@ -120,6 +120,7 @@ const SubManga = (() => {
     };
     list.push(item);
     saveSubdomains(list);
+    logActivity('add', 'Added subdomain: ' + item.name + '.' + getDomain());
     return item;
   }
   function updateSubdomain(id, patch) {
@@ -135,11 +136,14 @@ const SubManga = (() => {
       return s;
     });
     saveSubdomains(list);
+    logActivity('update', 'Updated subdomain: ' + (found ? found.name : id));
     return found;
   }
   function deleteSubdomain(id) {
+    const sub = getSubdomains().find((s) => s.id === id);
     const list = getSubdomains().filter((s) => s.id !== id);
     saveSubdomains(list);
+    logActivity('delete', 'Deleted subdomain: ' + (sub ? sub.name : id));
   }
   function findSubdomain(name) {
     const n = name.trim().toLowerCase();
@@ -235,6 +239,28 @@ const SubManga = (() => {
     };
   }
 
+  /* -------- activity log -------- */
+  const LOG_KEY = 'submanga.activity_log';
+  const MAX_LOG = 200;
+
+  function logActivity(action, detail) {
+    const list = read(LOG_KEY, []);
+    list.unshift({
+      id: 'log' + Date.now().toString(36),
+      action: action,
+      detail: detail || '',
+      time: Date.now(),
+    });
+    if (list.length > MAX_LOG) list.length = MAX_LOG;
+    write(LOG_KEY, list);
+  }
+  function getActivityLog() {
+    return read(LOG_KEY, []);
+  }
+  function clearActivityLog() {
+    write(LOG_KEY, []);
+  }
+
   return {
     KEYS,
     getSettings,
@@ -251,5 +277,8 @@ const SubManga = (() => {
     exportData,
     importData,
     githubPagesRecords,
+    logActivity,
+    getActivityLog,
+    clearActivityLog,
   };
 })();

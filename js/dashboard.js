@@ -6,6 +6,7 @@
   App.init('dashboard');
   const $ = App.$;
   const $all = App.$all;
+  Cloudflare.load();
 
   /* topbar theme + nav icon */
   $('#navAddIcon').innerHTML = App.icons.plus;
@@ -83,7 +84,7 @@
     const actions = [
       { icon: App.icons.plus, title: 'Add new subdomain', desc: 'Create a site like blog.'+SubManga.getDomain(), modal: true },
       { icon: App.icons.dns, title: 'Set up DNS', desc: 'Point subdomains to GitHub Pages', href: 'dns.html' },
-      { icon: App.icons.git, title: 'GitHub Pages', desc: 'Connect each repo to its subdomain', href: 'dns.html#github' },
+      { icon: App.icons.git, title: 'GitHub Pages', desc: 'Connect each repo to its subdomain', href: 'dns.html#dns' },
       { icon: App.icons.settings, title: 'Change domain', desc: 'Update your main domain name', href: 'settings.html' },
     ];
     $('#quickActions').innerHTML = actions.map((a) =>
@@ -142,17 +143,51 @@
   }
 
   /* ---------- quick add form ---------- */
-  $('#quickAddForm').addEventListener('submit', (e) => {
+  $('#quickAddForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = $('#quickName').value;
     if (!name) { App.toast('Please enter a subdomain name', 'error'); return; }
     if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i.test(name)) { App.toast('Invalid name — use letters, numbers, hyphens', 'error'); return; }
     if (SubManga.findSubdomain(name)) { App.toast('This subdomain already exists', 'error'); return; }
+    const repo = $('#quickRepo').value;
     SubManga.addSubdomain({
-      name: name, project: $('#quickProject').value, repo: $('#quickRepo').value,
+      name: name, project: $('#quickProject').value, repo: repo,
       status: 'draft', desc: '',
     });
-    App.toast('Subdomain created: ' + name.toLowerCase() + '.' + SubManga.getDomain(), 'success');
+
+    const domain = SubManga.getDomain();
+
+    /* try to create DNS record on Cloudflare */
+    if (Cloudflare.configured() && repo) {
+      const ghUser = repo.split('/')[0].trim();
+      if (ghUser) {
+        const target = ghUser + '.github.io';
+        try {
+          const res = await Cloudflare.createRecord({
+            type: 'CNAME',
+            name: name,
+            content: target,
+            ttl: 1,
+            proxied: true,
+          });
+          if (res.success) {
+            SubManga.updateSubdomain(SubManga.findSubdomain(name).id, { status: 'live' });
+            App.toast(name + '.' + domain + ' → Cloudflare mein ban gaya!', 'success');
+          } else {
+            App.toast(name + '.' + domain + ' → Cloudflare mein nahi bana!', 'error');
+          }
+        } catch (err) {
+          App.toast('Cloudflare mein nahi bana: ' + err.message, 'error');
+        }
+      } else {
+        App.toast(name + '.' + domain + ' added (Cloudflare ke liye repo mein username daalo)', 'warning');
+      }
+    } else if (!Cloudflare.configured()) {
+      App.toast(name + '.' + domain + ' added (Cloudflare configured nahi hai)', 'warning');
+    } else {
+      App.toast(name + '.' + domain + ' added', 'success');
+    }
+
     App.closeModal('modal-add');
     e.target.reset();
     renderStats();

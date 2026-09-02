@@ -135,6 +135,7 @@ const App = (() => {
       { id: 'subdomains', label: 'Subdomains', href: 'subdomains.html', icon: 'globe' },
       { id: 'dns', label: 'DNS & Deploy', href: 'dns.html', icon: 'dns' },
       { id: 'settings', label: 'Settings', href: 'settings.html', icon: 'settings' },
+      { id: 'admin', label: 'Admin Panel', href: 'admin.html', icon: 'spark' },
     ];
     const sidebar = $('#sidebar');
     const navItems = nav.map((n) =>
