@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>SubManga — Settings</title>
+  <meta name="description" content="Configure your domain, theme and data backup.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="sidebar" class="sidebar"></div>
+  <div id="mobile-nav" class="mobile-nav"></div>
+
+  <div class="layout">
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button id="hamburger" class="icon-btn hamburger" aria-label="Menu"></button>
+          <div class="page-title">
+            <h1>Settings</h1>
+            <p>Manage your domain and preferences</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" data-theme-switch aria-label="Toggle theme"><span data-theme-icon></span></button>
+        </div>
+      </header>
+
+      <main class="main-content page">
+        <div class="sub-grid stagger" style="grid-template-columns:1fr;max-width:760px">
+
+          <!-- Domain -->
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Main domain</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Sabhi subdomains iske aage banenge. Example: <code style="color:var(--primary)">blog.</code> + <code style="color:var(--primary)">yourdomain.com</code></p>
+            <form id="domainForm" class="inline-form">
+              <input class="input" id="domainInput" placeholder="prince.com">
+              <button class="btn btn-primary" type="submit">Save domain</button>
+            </form>
+            <div class="hint" style="font-size:12px;color:var(--muted-fg);margin-top:8px">Bina http/https aur trailing slash ke likhein, jaise <code>mywebsite.com</code></div>
+          </div>
+
+          <!-- Appearance -->
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Appearance</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Apna theme chunein — dark ya light.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn" id="themeToggle" style="flex:0 0 auto"></button>
+              <button class="btn btn-ghost" id="resetTheme">System default</button>
+            </div>
+          </div>
+
+          <!-- Data -->
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Data &amp; backup</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Aapka data is browser mein (localStorage) save hota hai. Backup lekar rakhna recommended hai.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn" id="exportBtn">Export backup</button>
+              <label class="btn" style="cursor:pointer">
+                Import backup
+                <input type="file" id="importFile" accept=".json" style="display:none">
+              </label>
+            </div>
+          </div>
+
+          <!-- Danger -->
+          <div class="card" style="border-color:rgba(239,68,68,0.3)">
+            <h2 style="font-size:17px;margin-bottom:4px;color:var(--destructive)">Danger zone</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Sabhi subdomains aur settings delete kar dega. Iska koi undo nahi hai.</p>
+            <button class="btn btn-danger" id="resetBtn">Reset all data</button>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- reset confirm -->
+  <div id="modal-reset" class="modal-backdrop">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-head">
+        <h3>Reset all data?</h3>
+        <button class="modal-close" data-close="modal-reset"></button>
+      </div>
+      <p style="font-size:14px;color:var(--muted-fg)">Ye saare subdomains, settings aur theme ko default par reset kar dega. Aage badhna chahate hain?</p>
+      <div class="form-actions">
+        <button class="btn btn-ghost" data-close="modal-reset">Cancel</button>
+        <button class="btn btn-danger" id="confirmReset">Yes, reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
