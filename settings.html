@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b1120">
   <title>SubManga — Settings</title>
-  <meta name="description" content="Configure your domain, theme and data backup.">
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="description" content="Manage your theme and data backup.">
+  <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
   <div id="sidebar" class="sidebar"></div>
-  <div id="mobile-nav" class="mobile-nav"></div>
 
   <div class="layout">
     <div class="main">
@@ -19,89 +18,28 @@
           <button id="hamburger" class="icon-btn hamburger" aria-label="Menu"></button>
           <div class="page-title">
             <h1>Settings</h1>
-            <p>Manage your domain and preferences</p>
+            <p>Manage your theme and backup</p>
           </div>
         </div>
         <div class="topbar-actions">
-          <button class="icon-btn" data-theme-switch aria-label="Toggle theme"><span data-theme-icon></span></button>
         </div>
       </header>
 
       <main class="main-content page">
         <div class="sub-grid stagger" style="grid-template-columns:1fr;max-width:100%">
 
-          <!-- Cloudflare API -->
-          <div class="card">
-            <h2 style="font-size:17px;margin-bottom:4px">Cloudflare API</h2>
-            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">DNS records Cloudflare se auto-manage honge. Subdomain deploy karna ho — sirf button dabao.</p>
-            <div class="callout" style="margin-bottom:16px">
-              <strong>Pehle Cloudflare Worker deploy karo</strong> — <a href="https://dash.cloudflare.com/" target="_blank" style="color:var(--c1)">Cloudflare Workers</a> pe jaake <code>worker.js</code> paste karo. Environment variable <code>DNS_PROXY_TOKEN</code> me apna API token daalo.
-            </div>
-            <div class="form-group">
-              <label>Worker URL</label>
-              <input class="input" id="cfWorker" type="url" placeholder="https://subdomain.YOUR_SUBDOMAIN.workers.dev">
-              <div class="hint">Worker deploy hone baad URL milega — wo yahan paste karo</div>
-            </div>
-            <div class="form-group">
-              <label>Zone ID</label>
-              <input class="input" id="cfZone" type="text" placeholder="Zone ID yahan daalo">
-              <div class="hint">Cloudflare Dashboard → domain select karo → right sidebar me Zone ID milega</div>
-            </div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <button class="btn btn-primary" id="cfSave">Save Config</button>
-              <button class="btn btn-ghost" id="cfTest">Test Connection</button>
-            </div>
-            <div id="cfStatus" style="margin-top:12px;font-size:13px;display:none"></div>
-          </div>
-
-          <!-- Quick Deploy -->
-          <div class="card">
-            <h2 style="font-size:17px;margin-bottom:4px">Quick Deploy</h2>
-            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Subdomain name aur GitHub repo daalo — seedha Cloudflare mein CNAME record ban jayega.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-              <div class="form-group" style="margin:0">
-                <label>Subdomain Name</label>
-                <div class="input-prefix">
-                  <span class="prefix" id="qdPrefix"></span>
-                  <input class="input" id="qdName" placeholder="jaise blog, api, shop">
-                </div>
-              </div>
-              <div class="form-group" style="margin:0">
-                <label>GitHub Username</label>
-                <input class="input" id="qdGithub" placeholder="jaise princekr786">
-              </div>
-            </div>
-            <button class="btn btn-primary" id="qdDeploy" style="width:100%">Deploy to Cloudflare DNS</button>
-            <div id="qdResult" style="margin-top:14px;display:none">
-              <pre id="qdOutput" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:var(--font-code);font-size:12px;color:var(--c1);overflow-x:auto;white-space:pre-wrap;max-height:250px;overflow-y:auto"></pre>
-            </div>
-          </div>
-
-          <!-- Domain -->
+          <!-- Domain (read-only, admin controlled) -->
           <div class="card">
             <h2 style="font-size:17px;margin-bottom:4px">Main domain</h2>
-            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Sabhi subdomains iske aage banenge. Example: <code style="color:var(--primary)">blog.</code> + <code style="color:var(--primary)">yourdomain.com</code></p>
-            <form id="domainForm" class="inline-form">
-              <input class="input" id="domainInput" placeholder="princehacks.online">
-              <button class="btn btn-primary" type="submit">Save domain</button>
-            </form>
-            <div class="hint" style="font-size:12px;color:var(--muted-fg);margin-top:8px">Bina http/https aur trailing slash ke likhein, jaise <code>mywebsite.com</code></div>
-          </div>
-
-          <!-- Appearance -->
-          <div class="card">
-            <h2 style="font-size:17px;margin-bottom:4px">Appearance</h2>
-            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Apna theme chunein — dark ya light.</p>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <button class="btn" id="themeToggle" style="flex:0 0 auto"></button>
-              <button class="btn btn-ghost" id="resetTheme">System default</button>
-            </div>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 12px">All subdomains are created under it.</p>
+            <div class="hero-domain" style="font-size:14px"><b id="domainDisplay"></b></div>
+            <div class="hint" style="font-size:12px;color:var(--muted-fg);margin-top:10px">Changeable only in the admin panel.</div>
           </div>
 
           <!-- Data -->
           <div class="card">
             <h2 style="font-size:17px;margin-bottom:4px">Data &amp; backup</h2>
-            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Aapka data is browser mein (localStorage) save hota hai. Backup lekar rakhna recommended hai.</p>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Saved in this browser. Keep a backup.</p>
             <div style="display:flex;gap:10px;flex-wrap:wrap">
               <button class="btn" id="exportBtn">Export backup</button>
               <label class="btn" style="cursor:pointer">
@@ -111,11 +49,14 @@
             </div>
           </div>
 
-          <!-- Danger -->
-          <div class="card" style="border-color:rgba(239,68,68,0.3)">
-            <h2 style="font-size:17px;margin-bottom:4px;color:var(--destructive)">Danger zone</h2>
-            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Sabhi subdomains aur settings delete kar dega. Iska koi undo nahi hai.</p>
-            <button class="btn btn-danger" id="resetBtn">Reset all data</button>
+          <!-- Help -->
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Help &amp; guides</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 16px">Step-by-step deploy guide.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn" href="dns.html">DNS &amp; Deploy guide</a>
+              <a class="btn btn-ghost" href="subdomains.html">My subdomains</a>
+            </div>
           </div>
 
         </div>
@@ -123,26 +64,11 @@
     </div>
   </div>
 
-  <!-- reset confirm -->
-  <div id="modal-reset" class="modal-backdrop">
-    <div class="modal" style="max-width:420px">
-      <div class="modal-head">
-        <h3>Reset all data?</h3>
-        <button class="modal-close" data-close="modal-reset"></button>
-      </div>
-      <p style="font-size:14px;color:var(--muted-fg)">Ye saare subdomains, settings aur theme ko default par reset kar dega. Aage badhna chahate hain?</p>
-      <div class="form-actions">
-        <button class="btn btn-ghost" data-close="modal-reset">Cancel</button>
-        <button class="btn btn-danger" id="confirmReset">Yes, reset</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="js/firebase-init.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/cloudflare.js"></script>
-  <script src="js/fx.js"></script>
-  <script src="js/settings.js"></script>
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/fx.js?v=4"></script>
+  <script src="js/settings.js?v=4"></script>
 </body>
 </html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060a14">
+  <title>SubManga Admin — Subdomains</title>
+  <link rel="stylesheet" href="css/admin.css?v=4">
+</head>
+<body data-admin-page="subdomains">
+  <div class="aurora">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-area">
+      <header class="topbar" id="topbar"></header>
+      <div class="content">
+        <div class="card">
+          <div class="toolbar">
+            <div class="search-input">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.3-4.3M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+              <input id="subSearch" type="text" placeholder="Search name, project, repo...">
+            </div>
+            <select class="select-input" id="subFilter">
+              <option value="all">All status</option>
+              <option value="live">Live</option>
+              <option value="pending">Pending</option>
+              <option value="draft">Draft</option>
+            </select>
+            <select class="select-input" id="subSort">
+              <option value="new">Newest first</option>
+              <option value="old">Oldest first</option>
+              <option value="az">Name A–Z</option>
+              <option value="za">Name Z–A</option>
+            </select>
+            <button class="btn btn-primary" id="subAdd">+ Add subdomain</button>
+          </div>
+          <div id="resultCount" style="font-size:12.5px;color:var(--muted-fg);margin-bottom:12px"></div>
+          <div id="subTableWrap"></div>
+          <div id="subCardsWrap" class="sub-grid" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- add/edit modal -->
+  <div id="modal-form" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="formTitle">Add subdomain</h3>
+        <button class="modal-close" data-close="modal-form">✕</button>
+      </div>
+      <form id="subForm">
+        <input type="hidden" id="editId" value="">
+        <div class="form-group">
+          <label>Subdomain name</label>
+          <div class="input-prefix">
+            <span class="prefix" id="prefix"></span>
+            <input class="input" id="fName" placeholder="blog" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Project name</label>
+          <input class="input" id="fProject" placeholder="My Blog">
+        </div>
+        <div class="form-group">
+          <label>GitHub repo (username/repo)</label>
+          <input class="input" id="fRepo" placeholder="princekr786/blog">
+          <div class="hint">First part is the username — Cloudflare CNAME points to it.</div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group" style="margin:0">
+            <label>Status</label>
+            <select class="input" id="fStatus">
+              <option value="draft">Draft</option>
+              <option value="pending">Pending</option>
+              <option value="live">Live</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Description</label>
+            <input class="input" id="fDesc" placeholder="Short note">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" data-close="modal-form">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="formSubmit">Add subdomain</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- delete modal -->
+  <div id="modal-delete" class="modal-backdrop">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-head">
+        <h3>Delete subdomain?</h3>
+        <button class="modal-close" data-close="modal-delete">✕</button>
+      </div>
+      <p style="font-size:13.5px;color:var(--muted-fg)"><code id="delName" style="color:var(--c1)"></code> will be deleted from the app. Delete the Cloudflare DNS record separately on the Zone page.</p>
+      <div class="form-actions">
+        <button class="btn btn-ghost" data-close="modal-delete">Cancel</button>
+        <button class="btn btn-danger" id="confirmDelete">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/admin-app.js?v=4"></script>
+  <script src="admin-main.js?v=4"></script>
+</body>
+</html>

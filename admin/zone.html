@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060a14">
+  <title>SubManga Admin — Cloudflare Zone</title>
+  <link rel="stylesheet" href="css/admin.css?v=4">
+</head>
+<body data-admin-page="zone">
+  <div class="aurora">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-area">
+      <header class="topbar" id="topbar"></header>
+      <div class="content">
+        <div class="card">
+          <h2 style="font-size:16px;margin-bottom:4px">Cloudflare DNS Records</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Live DNS records.</p>
+          <div id="zoneNotConfigured" class="callout warning" style="display:none">
+            Cloudflare is not configured. <a href="cfconfig.html" style="color:var(--c1)">Set it up</a>.
+          </div>
+          <div id="zoneRecords" style="display:none">
+            <div class="toolbar">
+              <div class="search-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.3-4.3M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+                <input id="zoneSearch" type="text" placeholder="Search name ya content...">
+              </div>
+              <select class="select-input" id="zoneFilter">
+                <option value="all">All types</option>
+                <option value="A">A</option>
+                <option value="CNAME">CNAME</option>
+                <option value="MX">MX</option>
+                <option value="TXT">TXT</option>
+              </select>
+              <button class="btn btn-sm" id="refreshZone">Refresh</button>
+              <button class="btn btn-sm btn-danger" id="zoneDeleteSel" disabled>Delete selected</button>
+              <span id="zoneCount" style="font-size:12.5px;color:var(--muted-fg);align-self:center"></span>
+            </div>
+            <div id="zoneTable"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/admin-app.js?v=4"></script>
+  <script src="admin-main.js?v=4"></script>
+</body>
+</html>

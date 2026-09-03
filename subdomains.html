@@ -6,11 +6,10 @@
   <meta name="theme-color" content="#0b1120">
   <title>SubManga — Subdomains</title>
   <meta name="description" content="Add, edit and delete your subdomains.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
   <div id="sidebar" class="sidebar"></div>
-  <div id="mobile-nav" class="mobile-nav"></div>
 
   <div class="layout">
     <div class="main">
@@ -23,7 +22,6 @@
           </div>
         </div>
         <div class="topbar-actions">
-          <button class="icon-btn" data-theme-switch aria-label="Toggle theme"><span data-theme-icon></span></button>
           <button class="btn btn-primary btn-sm" id="addBtn">
             <span style="display:inline-flex">+ Add</span>
           </button>
@@ -42,6 +40,12 @@
             <option value="live">Live</option>
             <option value="pending">Pending</option>
             <option value="draft">Draft</option>
+          </select>
+          <select class="select-input" id="sortBy">
+            <option value="new">Newest first</option>
+            <option value="old">Oldest first</option>
+            <option value="az">Name A–Z</option>
+            <option value="za">Name Z–A</option>
           </select>
           <button class="btn btn-ghost" id="clearFilters">Clear</button>
         </div>
@@ -84,6 +88,7 @@
           <label>GitHub repository</label>
           <input class="input" id="fRepo" placeholder="username/repo">
           <div class="hint">Repo that hosts this website on GitHub Pages.</div>
+          <div class="hint" id="formPrice" style="color:var(--c1)"></div>
         </div>
         <div class="form-group">
           <label>Status</label>
@@ -120,11 +125,12 @@
     </div>
   </div>
 
-  <script src="js/firebase-init.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/cloudflare.js"></script>
-  <script src="js/fx.js"></script>
-  <script src="js/subdomains.js"></script>
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/cloudflare.js?v=4"></script>
+  <script src="js/fx.js?v=4"></script>
+  <script src="js/subdomains.js?v=4"></script>
 </body>
 </html>

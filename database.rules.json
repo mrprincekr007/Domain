@@ -1,0 +1,33 @@
+{
+  "rules": {
+    "submanga": {
+      "settings": {
+        ".read": true,
+        ".write": "auth != null && (auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)"
+      },
+      "admins": {
+        ".read": "auth != null && (auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)",
+        ".write": "auth.uid === 'PASTE_YOUR_UID_HERE'"
+      },
+      "accounts": {
+        ".read": "auth != null && (auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)",
+        "$uid": {
+          ".read": "auth != null && (auth.uid === $uid || auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)",
+          ".write": "auth != null && (auth.uid === $uid || auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)"
+        }
+      },
+      "usernames": {
+        ".read": true,
+        "$name": {
+          ".write": "auth != null && (!data.exists() || auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)"
+        }
+      },
+      "users": {
+        "$uid": {
+          ".read": "auth != null && (auth.uid === $uid || auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)",
+          ".write": "auth != null && (auth.uid === $uid || auth.uid === 'PASTE_YOUR_UID_HERE' || root.child('submanga/admins').child(auth.uid).val() === true)"
+        }
+      }
+    }
+  }
+}

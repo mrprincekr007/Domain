@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060a14">
+  <title>SubManga Admin — Health Check</title>
+  <link rel="stylesheet" href="css/admin.css?v=4">
+</head>
+<body data-admin-page="health">
+  <div class="aurora">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-area">
+      <header class="topbar" id="topbar"></header>
+      <div class="content">
+        <div class="card">
+          <h2 style="font-size:16px;margin-bottom:4px">Subdomain Health Check</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Live DNS status via Google DNS.</p>
+          <div style="display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="checkAllHealth">Check All</button>
+            <button class="btn btn-ghost" id="clearHealth">Clear</button>
+            <button class="btn btn-ghost" id="exportHealth" disabled>Export CSV</button>
+          </div>
+          <div id="healthProgress" style="display:none;margin-bottom:14px">
+            <div style="font-size:12.5px;color:var(--muted-fg);margin-bottom:6px" id="healthProgressLabel">Checking...</div>
+            <div class="progress-bar"><div class="progress-bar-fill" id="healthProgressFill" style="width:0%"></div></div>
+          </div>
+          <div id="healthSummary" style="display:none;margin-bottom:14px"></div>
+          <div id="healthResults">
+            <div style="color:var(--muted-fg);padding:10px 0">Press "Check All".</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/admin-app.js?v=4"></script>
+  <script src="admin-main.js?v=4"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060a14">
+  <title>SubManga Admin — System Settings</title>
+  <link rel="stylesheet" href="css/admin.css?v=4">
+</head>
+<body data-admin-page="settings">
+  <div class="aurora">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-area">
+      <header class="topbar" id="topbar"></header>
+      <div class="content">
+        <div class="card">
+          <h2 style="font-size:16px;margin-bottom:4px">General Settings</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Domain and identity.</p>
+          <div class="form-group">
+            <label>Main domain</label>
+            <input class="input" id="setDomain" placeholder="princehacks.online">
+            <div class="hint">Preview: <code id="domainPreview" style="color:var(--c1)"></code></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group" style="margin:0">
+              <label>Owner name</label>
+              <input class="input" id="setOwner" placeholder="Your name">
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Default description</label>
+              <input class="input" id="setDesc" placeholder="Default note for new subdomains">
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn btn-primary" id="saveGeneral">Save Settings</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2 style="font-size:16px;margin-bottom:4px">Notification Preferences</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Which toasts appear in the admin panel.</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer">
+              <span class="toggle-switch"><input type="checkbox" id="prefSuccess"><span class="slider"></span></span>
+              <span style="font-size:13.5px">Show success toasts (deployed, saved, etc.)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer">
+              <span class="toggle-switch"><input type="checkbox" id="prefError"><span class="slider"></span></span>
+              <span style="font-size:13.5px">Show error toasts (failures, network errors, etc.)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer">
+              <span class="toggle-switch"><input type="checkbox" id="prefRefresh"><span class="slider"></span></span>
+              <span style="font-size:13.5px">Dashboard auto-refresh (har 60 second)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2 style="font-size:16px;margin-bottom:4px">Pricing</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Cost per buy + signup bonus.</p>
+          <div class="grid-2">
+            <div class="form-group" style="margin:0">
+              <label>Price per subdomain (credits)</label>
+              <input class="input" id="setPrice" type="number" min="0" max="10000">
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Signup bonus (credits)</label>
+              <input class="input" id="setBonus" type="number" min="0" max="10000">
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn btn-primary" id="savePricing">Save Pricing</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2 style="font-size:16px;margin-bottom:4px">User Panel Control</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Control user-panel behaviour.</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer">
+              <span class="toggle-switch"><input type="checkbox" id="uctlCreate"><span class="slider"></span></span>
+              <span style="font-size:13.5px">Allow new subdomain creation from the user panel</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:12px;cursor:pointer">
+              <span class="toggle-switch"><input type="checkbox" id="uctlHealth"><span class="slider"></span></span>
+              <span style="font-size:13.5px">Show the DNS Check button in the user panel</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2 style="font-size:16px;margin-bottom:4px">Data &amp; Backup</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Export/import app data.</p>
+          <div style="display:flex;gap:9px;flex-wrap:wrap">
+            <button class="btn" id="exportBtn">Export backup</button>
+            <label class="btn" style="cursor:pointer">Import backup<input type="file" id="importFile" accept=".json" style="display:none"></label>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;border-color:rgba(239,68,68,0.3)">
+          <h2 style="font-size:16px;margin-bottom:4px;color:var(--destructive)">Danger Zone</h2>
+          <p style="font-size:12.5px;color:var(--muted-fg);margin:0 0 14px">Cannot be undone.</p>
+          <div style="display:flex;gap:9px;flex-wrap:wrap">
+            <button class="btn btn-ghost" id="clearLogBtn">Clear activity log</button>
+            <button class="btn btn-ghost" id="resetSettingsBtn">Reset settings</button>
+            <button class="btn btn-danger" id="clearSubsBtn">Delete ALL subdomains</button>
+            <button class="btn btn-danger" id="resetAllBtn">Reset ALL data (full)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/admin-app.js?v=4"></script>
+  <script src="admin-main.js?v=4"></script>
+</body>
+</html>

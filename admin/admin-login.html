@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#060a14">
+  <title>SubManga Admin — Login</title>
+  <link rel="stylesheet" href="css/admin.css?v=4">
+</head>
+<body>
+  <div class="aurora">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="login-wrap">
+    <div class="login-card" id="loginCard">
+      <div class="brand">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" stroke="white" stroke-width="2.2"/></svg></div>
+        <div><div class="brand-name">Sub<em>Manga</em></div>
+        <div class="brand-sub">Admin Panel</div></div>
+      </div>
+      <div class="admin-badge" style="display:flex;justify-content:center;margin-bottom:18px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="12" height="12"><rect x="3" y="11" width="18" height="11" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Admin Access Only
+      </div>
+      <h2>Admin Login</h2>
+      <p class="sub">Enter credentials.</p>
+      <div class="conn-status"><span class="conn-dot" id="connDot"></span><span id="connText">Connecting...</span></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email / Username</label>
+          <input class="input" id="loginId" type="text" placeholder="admin@gmail.com or username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div style="position:relative">
+            <input class="input" id="loginPass" type="password" placeholder="Password" autocomplete="current-password" required style="padding-right:44px">
+            <button type="button" id="loginToggle" aria-label="Show password" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted-fg);font-size:12px;font-weight:700;cursor:pointer">SHOW</button>
+          </div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-fg);cursor:pointer;margin:2px 0 4px">
+          <input type="checkbox" id="adminRemember" checked style="width:16px;height:16px;accent-color:var(--c2)"> Remember me
+        </label>
+        <button class="btn btn-primary" id="loginSubmit" type="submit" style="width:100%;margin-top:8px">Login to Admin Panel</button>
+        <div class="login-error" id="loginError">Wrong username or password!</div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/admin-app.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('submanga.admin.auth') === '1') { window.location.href = 'admin.html'; return; }
+      } catch (e) {}
+      try {
+        var saved = AdminApp.rememberedUser();
+        if (saved) document.getElementById('loginId').value = saved;
+      } catch (e) {}
+      /* connection dot: green = Firebase Auth ready */
+      (function connWatch() {
+        var n = 0;
+        var timer = setInterval(function() {
+          var dot = document.getElementById('connDot');
+          var txt = document.getElementById('connText');
+          if (!dot || !txt) { clearInterval(timer); return; }
+          var ok = false, failed = false;
+          try {
+            ok = !!(window.firebase && window.firebase.auth);
+            var st = window.FirebaseSDKStatus || {};
+            failed = st.auth === false || st.app === false;
+          } catch (e) {}
+          n++;
+          if (ok) {
+            dot.className = 'conn-dot on'; txt.textContent = 'Connected';
+            clearInterval(timer);
+          } else if (failed || n > 40) {
+            dot.className = 'conn-dot off'; txt.textContent = 'Not connected';
+            clearInterval(timer);
+          }
+        }, 500);
+      })();
+      /* keep the button disabled until Firebase Auth is ready */
+      var btn0 = document.getElementById('loginSubmit');
+      btn0.disabled = true;
+      btn0.textContent = 'Loading login service...';
+      var tries = 0;
+      var timer = setInterval(function() {
+        var ok = false;
+        try { ok = !!(window.firebase && window.firebase.auth); } catch (e) {}
+        tries++;
+        if (ok || tries > 40) {
+          clearInterval(timer);
+          btn0.disabled = false;
+          btn0.textContent = 'Login to Admin Panel';
+        }
+      }, 300);
+      var pass = document.getElementById('loginPass');
+      document.getElementById('loginToggle').addEventListener('click', function() {
+        var show = pass.type === 'password';
+        pass.type = show ? 'text' : 'password';
+        this.textContent = show ? 'HIDE' : 'SHOW';
+      });
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('loginSubmit');
+        btn.disabled = true;
+        btn.textContent = 'Logging in...';
+        document.getElementById('loginError').style.display = 'none';
+        var email = document.getElementById('loginId').value.trim();
+        var pwd = pass.value;
+        var box = document.getElementById('adminRemember');
+        AdminApp.login(email, pwd, !box || box.checked).then(function(res) {
+          if (res && res.ok) {
+            btn.textContent = 'Welcome!';
+            window.location.href = 'admin.html';
+          } else {
+            btn.disabled = false;
+            btn.textContent = 'Login to Admin Panel';
+            var err = document.getElementById('loginError');
+            err.textContent = (res && res.error) || 'Login failed.';
+            err.style.display = 'block';
+            var card = document.getElementById('loginCard');
+            card.classList.remove('shake');
+            void card.offsetWidth;
+            card.classList.add('shake');
+          }
+        }).catch(function(err) {
+          btn.disabled = false;
+          btn.textContent = 'Login to Admin Panel';
+          var err2 = document.getElementById('loginError');
+          err2.textContent = (err && err.message) || 'Login failed.';
+          err2.style.display = 'block';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

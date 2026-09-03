@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>SubManga — Profile</title>
+  <link rel="stylesheet" href="css/styles.css?v=4">
+</head>
+<body>
+  <div id="sidebar" class="sidebar"></div>
+
+  <div class="layout">
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button id="hamburger" class="icon-btn hamburger" aria-label="Menu"></button>
+          <div class="page-title">
+            <h1>My Profile</h1>
+            <p>Account details and security</p>
+          </div>
+        </div>
+        <div class="topbar-actions"></div>
+      </header>
+
+      <main class="main-content page">
+        <div class="sub-grid stagger" style="grid-template-columns:1fr;max-width:100%">
+
+          <div class="card" style="text-align:center">
+            <div class="avatar-big" id="avatarBig">U</div>
+            <h2 style="font-size:20px;margin:12px 0 2px" id="profName">—</h2>
+            <div style="font-family:var(--font-code);font-size:13px;color:var(--muted-fg)" id="profUser">@—</div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap">
+              <span class="badge info" id="profSites">0 sites</span>
+              <span class="badge success" id="profCredits">0 credits</span>
+              <span class="badge neutral" id="profSince">—</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Display name</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 14px">Shown in the sidebar.</p>
+            <form id="displayForm" class="inline-form">
+              <input class="input" id="displayInput" placeholder="Tumhara naam" maxlength="30">
+              <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Change password</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 14px">Set a new password.</p>
+            <form id="passForm">
+              <div class="form-group">
+                <label>Old password</label>
+                <input class="input" id="oldPass" type="password" autocomplete="current-password">
+              </div>
+              <div class="form-group">
+                <label>New password (min 6 chars)</label>
+                <input class="input" id="newPass" type="password" autocomplete="new-password">
+              </div>
+              <button class="btn btn-primary" type="submit">Update password</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Session</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 14px">Logout from this browser.</p>
+            <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/fx.js?v=4"></script>
+  <script src="js/profile.js?v=4"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 // Cloudflare Worker — DNS Proxy for SubManga app
-// Deploy karo: Cloudflare Workers → Create Worker → paste this → Save
-// Token environment variable me store hota hai (safe).
+// Deploy: Cloudflare Workers → Create Worker → paste this → Save
+// Token is stored in an environment variable (safe).
 
 export default {
   async fetch(request, env) {

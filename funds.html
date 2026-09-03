@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>SubManga — Wallet</title>
+  <link rel="stylesheet" href="css/styles.css?v=4">
+</head>
+<body>
+  <div id="sidebar" class="sidebar"></div>
+
+  <div class="layout">
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button id="hamburger" class="icon-btn hamburger" aria-label="Menu"></button>
+          <div class="page-title">
+            <h1>Wallet</h1>
+            <p>Add credits, view history</p>
+          </div>
+        </div>
+        <div class="topbar-actions"></div>
+      </header>
+
+      <main class="main-content page">
+        <div class="sub-grid stagger" style="grid-template-columns:1fr;max-width:100%">
+
+          <div class="card" style="text-align:center">
+            <div style="font-size:13px;color:var(--muted-fg)">Available balance</div>
+            <div style="font-size:44px;font-weight:800;font-family:var(--font-display);color:var(--c1)" id="walletBalance">0</div>
+            <div style="font-size:12.5px;color:var(--muted-fg)">credits · 1 subdomain = <b id="walletPrice" style="color:var(--foreground)">10</b> credits</div>
+          </div>
+
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:4px">Add funds</h2>
+            <p style="font-size:13px;color:var(--muted-fg);margin:0 0 14px">Demo mode: instant top-up.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px" id="quickAmounts">
+              <button class="btn" data-amt="50">+50</button>
+              <button class="btn" data-amt="100">+100</button>
+              <button class="btn" data-amt="500">+500</button>
+            </div>
+            <form id="fundForm" class="inline-form">
+              <input class="input" id="fundAmount" type="number" min="1" max="100000" placeholder="Custom amount">
+              <button class="btn btn-primary" type="submit">Add funds</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2 style="font-size:17px;margin-bottom:12px">Transactions</h2>
+            <div id="txnList"></div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/fx.js?v=4"></script>
+  <script src="js/funds.js?v=4"></script>
+</body>
+</html>

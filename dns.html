@@ -6,11 +6,10 @@
   <meta name="theme-color" content="#0b1120">
   <title>SubManga — DNS & Deploy</title>
   <meta name="description" content="Step-by-step guide to point subdomains to GitHub Pages via Cloudflare DNS.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
   <div id="sidebar" class="sidebar"></div>
-  <div id="mobile-nav" class="mobile-nav"></div>
 
   <div class="layout">
     <div class="main">
@@ -23,7 +22,6 @@
           </div>
         </div>
         <div class="topbar-actions">
-          <button class="icon-btn" data-theme-switch aria-label="Toggle theme"><span data-theme-icon></span></button>
         </div>
       </header>
 
@@ -42,9 +40,10 @@
         <section class="tab-panel active" id="tab-deploy" style="margin-top:24px">
           <div class="card reveal">
             <h2 style="font-size:18px;margin-bottom:4px">One-Click Deploy</h2>
-            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 16px">Subdomain name likho, GitHub repo batao, button dabao — DNS record auto ban jayega Cloudflare pe.</p>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 16px">Enter the details and press Deploy.</p>
+            <div class="hint" id="deployPrice" style="font-size:12.5px;color:var(--c1);margin-bottom:12px"></div>
             <div id="cfNotConfigured" class="callout warning">
-              Cloudflare configured nahi hai. <a href="settings.html" style="color:var(--c1)">Settings me jaake Worker URL + Zone ID daalo</a>.
+              Cloudflare is not configured. Ask the admin to set it up.
             </div>
             <div id="cfReady">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
@@ -52,12 +51,12 @@
                   <label>Subdomain Name</label>
                   <div class="input-prefix">
                     <span class="prefix" id="deployPrefix"></span>
-                    <input class="input" id="deployName" placeholder="jaise blog, shop, tools...">
+                    <input class="input" id="deployName" placeholder="e.g. blog, shop, tools...">
                   </div>
                 </div>
                 <div class="form-group" style="margin:0">
                   <label>GitHub Username</label>
-                  <input class="input" id="deployGithub" placeholder="jaise princekr786">
+                  <input class="input" id="deployGithub" placeholder="e.g. princekr786">
                 </div>
               </div>
               <button class="btn btn-primary magnetic" id="deployBtn" style="width:100%">Deploy to Cloudflare DNS</button>
@@ -70,7 +69,7 @@
           <!-- Existing subdomains quick deploy -->
           <div class="card reveal" style="margin-top:18px">
             <h2 style="font-size:18px;margin-bottom:4px">Existing Subdomains</h2>
-            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 12px">Ye subdomains already app me hain. Inke DNS record check karo ya re-deploy karo.</p>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 12px">Your deployed subdomains. Check DNS or re-deploy.</p>
             <div id="existingList"></div>
           </div>
         </section>
@@ -79,50 +78,50 @@
         <section class="tab-panel" id="tab-dns" style="margin-top:24px">
           <div class="card reveal visible">
             <h2 style="font-size:18px;margin-bottom:4px">Cloudflare DNS Records Guide</h2>
-            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 8px">Ye steps kisi bhi subdomain (jaise <code style="color:var(--primary)">blog.princehacks.online</code>) ko apne GitHub Pages site se jod denge. DNS changes ko reflect hone mein 5-15 minute lag sakte hain.</p>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 8px">Connect any subdomain to GitHub Pages. Changes take 5-15 minutes.</p>
 
             <div class="step-list stagger">
               <div class="step">
                 <div class="step-num">1</div>
                 <div class="step-body">
-                  <h4>Apna GitHub Pages URL note karein</h4>
-                  <p>Har GitHub repo jispe website hai uske GitHub Pages URL ko copy karein:</p>
+                  <h4>Note down your GitHub Pages URL</h4>
+                  <p>Copy the GitHub Pages URL of the repo:</p>
                   <div class="code-block">
 <span class="comment"># GitHub Pages URL format</span>
 https://USERNAME.github.io/REPO-NAME
                   </div>
-                  <p>GitHub repo ke <strong>Settings → Pages</strong> mein jaakar URL dekh sakte hain.</p>
+                  <p>Find it under the repo's <strong>Settings → Pages</strong>.</p>
                 </div>
               </div>
 
               <div class="step">
                 <div class="step-num">2</div>
                 <div class="step-body">
-                  <h4>Cloudflare DNS mein jaayen</h4>
-                  <p>Cloudflare Dashboard mein login karein → <strong>princehacks.online</strong> select karein → <strong>DNS</strong> tab mein jaayen.</p>
+                  <h4>Go to Cloudflare DNS</h4>
+                  <p>Login to Cloudflare → select the domain → open <strong>DNS</strong>.</p>
                 </div>
               </div>
 
               <div class="step">
                 <div class="step-num">3</div>
                 <div class="step-body">
-                  <h4>CNAME record add karein</h4>
-                  <p>Har subdomain ke liye ek <strong>CNAME record</strong> add karein:</p>
+                  <h4>Add a CNAME record</h4>
+                  <p>One <strong>CNAME record</strong> per subdomain:</p>
                   <div class="code-block">
 <span class="comment"># Type: CNAME</span>
-<span class="comment"># Name:</span> blog  (ya koi bhi subdomain naam)
+<span class="comment"># Name:</span> blog  (or any subdomain name)
 <span class="comment"># Target:</span> USERNAME.github.io
 <span class="comment"># Proxy status:</span> Proxied (orange cloud ON)
                   </div>
-                  <p>Bas! Cloudflare auto-propagate kar dega.</p>
+                  <p>That's it! Cloudflare propagates automatically.</p>
                 </div>
               </div>
 
               <div class="step">
                 <div class="step-num">4</div>
                 <div class="step-body">
-                  <h4>Verify karein</h4>
-                  <p>Deploy tab pe jaake <strong>Check DNS</strong> button dabayein. DNS propagate hone mein 5-15 minute lagte hain.</p>
+                  <h4>Verify</h4>
+                  <p>Open Deploy and press <strong>Check DNS</strong>. Allow 5-15 minutes.</p>
                 </div>
               </div>
             </div>
@@ -133,7 +132,7 @@ https://USERNAME.github.io/REPO-NAME
         <section class="tab-panel" id="tab-generator" style="margin-top:24px">
           <div class="card">
             <h2 style="font-size:18px;margin-bottom:4px">Link Generator</h2>
-            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 16px">Apne subdomain ke liye exact DNS records + CNAME file instantly banayen.</p>
+            <p style="font-size:14px;color:var(--muted-fg);margin:4px 0 16px">Generate exact DNS records + CNAME file.</p>
 
             <form id="genForm" class="inline-form">
               <input class="input" id="genName" placeholder="blog" style="flex:0 0 140px">
@@ -141,7 +140,7 @@ https://USERNAME.github.io/REPO-NAME
               <button type="submit" class="btn btn-primary">Generate</button>
             </form>
             <div class="hint" style="font-size:12px;color:var(--muted-fg);margin-top:8px">
-              Subdomain name + GitHub username daalein. (Aapka main domain: <strong id="genDomain"></strong>)
+              Subdomain + GitHub username. (Domain: <strong id="genDomain"></strong>)
             </div>
 
             <div id="genResult" style="display:none">
@@ -153,14 +152,14 @@ https://USERNAME.github.io/REPO-NAME
 <div id="rec-a" style="white-space:pre"></div>
               </div>
 
-              <h4 style="margin:14px 0 6px">2. CNAME file (repo ke root mein)</h4>
+              <h4 style="margin:14px 0 6px">2. CNAME file (in the repo root)</h4>
               <div class="code-block" data-copy="rec-cname">
                 <button class="copy-btn" data-copytarget="rec-cname">Copy</button>
 <div id="rec-cname" style="white-space:pre"></div>
               </div>
 
               <div class="callout success" style="margin-top:16px">
-                <span class="gen-check-icon"></span><div>Save karte hi GitHub automatically DNS verify karega. Propagate hone tak <strong>Enforce HTTPS</strong> lag sakta hai.</div>
+                <span class="gen-check-icon"></span><div>GitHub verifies DNS after saving. <strong>Enforce HTTPS</strong> needs propagation.</div>
               </div>
             </div>
           </div>
@@ -178,11 +177,12 @@ https://USERNAME.github.io/REPO-NAME
     </div>
   </div>
 
-  <script src="js/firebase-init.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/cloudflare.js"></script>
-  <script src="js/fx.js"></script>
-  <script src="js/dns.js"></script>
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/cloudflare.js?v=4"></script>
+  <script src="js/fx.js?v=4"></script>
+  <script src="js/dns.js?v=4"></script>
 </body>
 </html>

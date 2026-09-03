@@ -6,11 +6,10 @@
   <meta name="theme-color" content="#070b15">
   <title>SubManga — Domain Dashboard</title>
   <meta name="description" content="Manage all your subdomains and GitHub Pages websites in one place.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
   <div id="sidebar" class="sidebar"></div>
-  <div id="mobile-nav" class="mobile-nav"></div>
 
   <div class="layout">
     <div class="main">
@@ -23,7 +22,6 @@
           </div>
         </div>
         <div class="topbar-actions">
-          <button class="icon-btn" data-theme-switch aria-label="Toggle theme"><span data-theme-icon></span></button>
           <a class="btn btn-primary btn-sm magnetic" href="subdomains.html">
             <span id="navAddIcon"></span> Add site
           </a>
@@ -39,8 +37,8 @@
           <div class="hero-inner">
             <div class="hero-content">
               <div class="hero-eyebrow"><span class="pulse-dot"></span> All systems operational</div>
-              <h1 class="hero-title">Apne <span class="grad">domain</span> se<br>unlimited websites.</h1>
-              <p class="hero-desc">Ek hi domain se 1000+ subdomain websites chalao — sab GitHub Pages par. Manage karo, deploy karo, aur track karo ek jagah.</p>
+              <h1 class="hero-title">Unlimited websites<br>from your <span class="grad">domain</span>.</h1>
+              <p class="hero-desc">Run 1000+ subdomain websites from one GitHub Pages domain.</p>
               <div class="hero-domain" id="heroDomain"></div>
               <div class="hero-cta">
                 <button class="btn btn-primary magnetic" data-open-add><span style="display:inline-flex;margin-right:2px">＋</span> New subdomain</button>
@@ -98,6 +96,7 @@
         <div class="form-group">
           <label>GitHub repo</label>
           <input class="input" id="quickRepo" placeholder="username/repo">
+          <div class="hint" id="quickPrice"></div>
         </div>
         <div class="form-actions">
           <button type="button" class="btn btn-ghost" data-close="modal-add">Cancel</button>
@@ -107,11 +106,12 @@
     </div>
   </div>
 
-  <script src="js/firebase-init.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/cloudflare.js"></script>
-  <script src="js/fx.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/cloudflare.js?v=4"></script>
+  <script src="js/fx.js?v=4"></script>
+  <script src="js/dashboard.js?v=4"></script>
 </body>
 </html>

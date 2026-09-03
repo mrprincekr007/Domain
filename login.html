@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>SubManga — Login</title>
+  <link rel="stylesheet" href="css/styles.css?v=4">
+</head>
+<body>
+  <div class="aurora">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="auth-wrap">
+    <div class="auth-card" id="loginCard">
+      <div class="auth-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" stroke="white" stroke-width="2.2"/></svg></div>
+      <h2>Welcome <span>back</span></h2>
+      <p class="sub">Login to buy and manage your subdomains.</p>
+      <div class="conn-status"><span class="conn-dot" id="connDot"></span><span id="connText">Connecting...</span></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email / Username</label>
+          <input class="input" id="loginId" type="text" placeholder="naam@gmail.com ya username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div style="position:relative">
+            <input class="input" id="loginPass" type="password" placeholder="Password" autocomplete="current-password" required style="padding-right:52px">
+            <button type="button" id="loginToggle" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted-fg);font-size:12px;font-weight:700;cursor:pointer">SHOW</button>
+          </div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-fg);cursor:pointer;margin:2px 0 4px">
+          <input type="checkbox" id="rememberMe" checked style="width:16px;height:16px;accent-color:var(--c2)"> Remember me
+        </label>
+        <button class="btn btn-primary" id="loginSubmit" type="submit" style="width:100%;margin-top:8px">Login</button>
+        <div class="login-error" id="loginError"></div>
+      </form>
+      <div class="auth-switch">New here? <a href="register.html">Register — free bonus credits!</a></div>
+      <div class="auth-switch"><a href="index.html">← Browse without login</a></div>
+    </div>
+  </div>
+
+  <script src="js/firebase-init.js?v=4"></script>
+  <script src="js/auth.js?v=4"></script>
+  <script src="js/login.js?v=4"></script>
+</body>
+</html>
